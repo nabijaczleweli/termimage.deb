@@ -1,0 +1,77 @@
+v0.5.0          Advancement
+    
+    Changed:
+      * image version to 0.22
+        (https://github.com/nabijaczleweli/termimage/issues/13) (https://github.com/Aaron1011)
+      * lazy_static and regex versions to newest
+
+
+v0.4.0          Machinery's a meaner beast, but we're still in the saddle
+    
+    Changed:
+      * Crate version image protocol to HTTPS
+      * RawGit links to GitHack
+      * Dependencies to freshest versions
+        (https://github.com/nabijaczleweli/termimage/issues/12) (https://github.com/Aaron1011)
+    
+    New:
+      * Installation/building instruxions
+        (https://github.com/nabijaczleweli/termimage/issues/11)
+      * @Aaron1011 in authors list
+
+
+v0.3.2          Hello Linux my old friend
+    
+    Fixed:
+      * ANSI attributes persist after printing image no longer by printing
+        reset
+        (https://github.com/nabijaczleweli/termimage/issues/10)
+
+
+v0.3.1          FEATURES!
+    
+    But not any new ones from this crate. Move along, citizen.
+
+
+v0.3.0          DRY, icy Errors and ⚡⚡
+    
+    New:
+      * Dank-ass DS3 truecolor SS, thanks /u/little-dude
+      * Prose and examples in general library usage
+      * create_colourtable() so you can display images yourself with as
+        little hassle as possible
+        (https://github.com/nabijaczleweli/termimage/issues/9)
+    
+    Changed:
+      * Rename Outcome to Error
+    
+    Internals:
+      * Use create_colourtable() in WinAPI and ANSI display impls
+
+
+v0.2.1          Warning: too tall to join
+    
+    Fix:
+      * Images were too tall when autodetecting term size
+      * Unused import warnings on non-Windows
+    
+    New:
+      * More examples
+
+
+v0.2.0          LUDICROUS RESOLUTION
+    
+    New:
+      * Optional 24-bit (truecolor) ANSI output
+        (https://github.com/nabijaczleweli/termimage/issues/5)
+      * Double the output resolution by using Unicode upper block char
+        (https://github.com/nabijaczleweli/termimage/issues/4)
+
+
+v0.1.1          Wizardry
+    
+    New:
+      * Outcome::OpeningImageFailed for load_image() and guess_format()
+
+
+v0.1.0          Initial release

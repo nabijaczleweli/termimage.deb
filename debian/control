@@ -1,0 +1,21 @@
+Source: termimage
+Section: admin
+Priority: optional
+Maintainer: nabijaczleweli <nabijaczleweli@gmail.com>
+Uploaders: nabijaczleweli <nabijaczleweli@gmail.com>
+Standards-Version: 4.5.0
+Rules-Requires-Root: no
+Vcs-Git: https://github.com/nabijaczleweli/termimage.deb.git
+Vcs-Browser: https://github.com/nabijaczleweli/termimage.deb
+Homepage: https://github.com/nabijaczleweli/termimage
+Tag: implemented-in::rust, role::program
+#Build-Depends: ronn,  too old, broken on my machine
+#               rustc?
+
+Package: termimage
+Architecture: linux-any
+#Section: ?
+Priority: optional
+Depends: ${misc:Depends},
+         ${shlibs:Depends},
+Description: Display images in your terminal, kind of
