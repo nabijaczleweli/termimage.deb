@@ -13,11 +13,14 @@ override_dh_auto_build:
 	RUSTFLAGS=-g $(CARGO) build --release
 
 override_dh_auto_install:
-	mkdir -p $(OUTDIR)usr/bin $(OUTDIR)usr/share/man/man1 $(OUTDIR)usr/share/doc/termimage
+	mkdir -p $(OUTDIR)usr/bin
 	cp target/release/termimage $(OUTDIR)usr/bin/
-	cat termimage.1 | gzip -9 > $(OUTDIR)usr/share/man/man1/termimage.1.gz
-	cat README.md | gzip -9 > $(OUTDIR)usr/share/doc/termimage/README.md.gz
-	cat debian/changelog.upstream | gzip -9 > $(OUTDIR)usr/share/doc/termimage/changelog.gz
+
+override_dh_installchangelogs:
+	dh_installchangelogs debian/changelog.upstream
+
+override_dh_installdocs:
+	dh_installdocs README.md
 
 %:
 	dh $@
