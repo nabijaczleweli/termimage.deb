@@ -1,0 +1,85 @@
+From: nabijaczleweli <nabijaczleweli@gmail.com>
+Date: Sun, 23 Feb 2020 23:08:42 +0100
+Subject: Add binary for generating shell completion files
+
+---
+ Cargo.toml                         |  6 ++++++
+ src/options.rs                     | 22 ++++++++++++----------
+ src/termimage-build-completions.rs | 12 ++++++++++++
+ 3 files changed, 30 insertions(+), 10 deletions(-)
+ create mode 100644 src/termimage-build-completions.rs
+
+diff --git a/Cargo.toml b/Cargo.toml
+index 6cdeb5e..f90c12b 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -32,3 +32,9 @@ features = ["winbase", "wincon"]
+ name = "termimage"
+ test = false
+ doc = false
++
++[[bin]]
++name = "termimage-build-completions"
++path = "src/termimage-build-completions.rs"
++test = false
++doc = false
+diff --git a/src/options.rs b/src/options.rs
+index 2166742..b9553cd 100644
+--- a/src/options.rs
++++ b/src/options.rs
+@@ -44,25 +44,27 @@ pub struct Options {
+ }
+ 
+ impl Options {
+-    /// Parse `env`-wide command-line arguments into an `Options` instance
+-    pub fn parse() -> Options {
+-        let szarg_def;
++    pub fn app(szarg_def: Option<&str>) -> clap::App {
+         let mut szarg = Arg::from_usage("-s --size [size] 'Output image resolution'").validator(Options::size_validator);
+-        let have_dimms = if let Some((w, h)) = term_size::dimensions() {
+-            szarg_def = format!("{}x{}", w, h - 1);
+-            szarg = szarg.default_value(&szarg_def);
+-            true
++        if let Some(szarg_def) = szarg_def {
++            szarg = szarg.default_value(szarg_def);
+         } else {
+             szarg = szarg.required(true);
+-            false
+-        };
++        }
+ 
+-        let matches = app_from_crate!()
++        app_from_crate!()
+             .setting(AppSettings::ColoredHelp)
+             .arg(Arg::from_usage("<IMAGE> 'Image file to display'").validator(Options::image_file_validator))
+             .arg(szarg)
+             .arg(Arg::from_usage("-f --force 'Don\\'t preserve the image\\'s aspect ratio'"))
+             .arg(Arg::from_usage("-a --ansi [ANSI] 'Force output ANSI escapes'").possible_values(&["simple", "truecolor"]))
++    }
++
++    /// Parse `env`-wide command-line arguments into an `Options` instance
++    pub fn parse() -> Options {
++        let dimms = term_size::dimensions().map(|(w, h)| format!("{}x{}", w, h - 1));
++        let have_dimms = dimms.is_some();
++        let matches = Options::app(dimms.as_ref().map(String::as_str))
+             .get_matches();
+ 
+         let image = matches.value_of("IMAGE").unwrap();
+diff --git a/src/termimage-build-completions.rs b/src/termimage-build-completions.rs
+new file mode 100644
+index 0000000..563070c
+--- /dev/null
++++ b/src/termimage-build-completions.rs
+@@ -0,0 +1,12 @@
++extern crate termimage;
++extern crate clap;
++
++use clap::Shell;
++
++
++fn main() {
++    let mut app = termimage::Options::app(None);
++    for &shell in &[Shell::Bash, Shell::Zsh, Shell::Fish] {
++        app.gen_completions("termimage", shell, ".");
++    }
++}
