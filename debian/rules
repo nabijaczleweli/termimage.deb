@@ -9,12 +9,20 @@ VERSION = $(shell awk '/^version/ {print $$3; exit}' Cargo.toml | sed 's/"//g')
 
 
 override_dh_auto_build:
+	mkdir -p completions
 	$(RONN) --organization="termimage developers" termimage.md
 	RUSTFLAGS=-g $(CARGO) build --release
+	cd completions && ../target/release/termimage-build-completions
 
 override_dh_auto_install:
-	mkdir -p $(OUTDIR)usr/bin
+	mkdir -p $(OUTDIR)usr/bin $(OUTDIR)usr/share/zsh/vendor-functions $(OUTDIR)usr/share/fish/vendor_completions.d
 	cp target/release/termimage $(OUTDIR)usr/bin/
+	@
+	dh_bash-completion
+	# https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=921236#17
+	cp completions/_termimage $(OUTDIR)usr/share/zsh/vendor-functions/
+	# # https://fishshell.com/docs/current/#where-to-put-completions
+	cp completions/termimage.fish $(OUTDIR)usr/share/fish/vendor_completions.d/
 
 override_dh_installchangelogs:
 	dh_installchangelogs debian/changelog.upstream
