@@ -1,3 +1,10 @@
+termimage (0.5.0-4) unstable; urgency=medium
+
+  * Patch in simple binary for extracting shell completion files
+  * Install completions for bash, zsh, and fish
+
+ -- nabijaczleweli <nabijaczleweli@gmail.com>  Sun, 23 Feb 2020 23:16:06 +0100
+
 termimage (0.5.0-3) unstable; urgency=medium
 
   * Use debhelper overrides correctly
