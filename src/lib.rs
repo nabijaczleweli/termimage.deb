@@ -1,9 +1,15 @@
 //! Display images in your terminal, kind of
 //!
-//! ![DS3 SS example WinAPI](https://cdn.rawgit.com/nabijaczleweli/termimage/master/assets/DS3-winapi.jpg)
-//! ![DS3 SS example truecolor](https://cdn.rawgit.com/nabijaczleweli/termimage/master/assets/DS3-truecolor.png)
-//! ![rust logo example](https://cdn.rawgit.com/nabijaczleweli/termimage/master/assets/rust-logo-truecolor.png)
-//! ![playing dice example](https://cdn.rawgit.com/nabijaczleweli/termimage/master/assets/playing-dice-truecolor.png)
+//! ![DS3 SS example WinAPI](https://rawcdn.githack.com/nabijaczleweli/termimage/master/assets/DS3-winapi.jpg)
+//! ![DS3 SS example truecolor](https://rawcdn.githack.com/nabijaczleweli/termimage/master/assets/DS3-truecolor.png)
+//! ![Rust logo example](https://rawcdn.githack.com/nabijaczleweli/termimage/master/assets/rust-logo-truecolor.png)
+//! ![playing dice example](https://rawcdn.githack.com/nabijaczleweli/termimage/master/assets/playing-dice-truecolor.png)
+//!
+//! # Special thanks
+//!
+//! To all who support further development on [Patreon](https://patreon.com/nabijaczleweli), in particular: //!
+//!
+//!   * ThePhD
 //!
 //! # Library doc
 //!
@@ -44,7 +50,7 @@
 //! ```no_run
 //! # extern crate termimage;
 //! # extern crate image;
-//! # use image::GenericImage;
+//! # use image::GenericImageView;
 //! # use std::io::stdout;
 //! # use termimage::*;
 //! # fn main() {
@@ -158,8 +164,6 @@
 #[macro_use]
 extern crate lazy_static;
 extern crate term_size;
-#[cfg(target_os = "windows")]
-extern crate kernel32;
 #[cfg(target_os = "windows")]
 extern crate winapi;
 extern crate image;

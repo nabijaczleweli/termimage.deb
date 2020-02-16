@@ -11,7 +11,7 @@
 //! ```
 
 
-use clap::{App, Arg, AppSettings};
+use clap::{Arg, AppSettings};
 use std::path::PathBuf;
 use std::str::FromStr;
 use regex::Regex;
@@ -57,11 +57,8 @@ impl Options {
             false
         };
 
-        let matches = App::new("termimage")
-            .version(crate_version!())
-            .author(crate_authors!())
+        let matches = app_from_crate!()
             .setting(AppSettings::ColoredHelp)
-            .about("Display images in your terminal, kind of")
             .arg(Arg::from_usage("<IMAGE> 'Image file to display'").validator(Options::image_file_validator))
             .arg(szarg)
             .arg(Arg::from_usage("-f --force 'Don\\'t preserve the image\\'s aspect ratio'"))
@@ -86,7 +83,7 @@ impl Options {
     }
 
     fn parse_size(s: &str) -> Option<(u32, u32)> {
-        SIZE_ARG_RGX.captures(s).map(|c| (u32::from_str(c.at(1).unwrap()).unwrap(), u32::from_str(c.at(2).unwrap()).unwrap()))
+        SIZE_ARG_RGX.captures(s).map(|c| (u32::from_str(c.get(1).unwrap().as_str()).unwrap(), u32::from_str(c.get(2).unwrap().as_str()).unwrap()))
     }
 
     fn image_file_validator(s: String) -> Result<(), String> {

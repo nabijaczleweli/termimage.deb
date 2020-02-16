@@ -1,30 +1,31 @@
 [package]
 name = "termimage"
 description = "Display images in your terminal, kind of"
-documentation = "https://cdn.rawgit.com/nabijaczleweli/termimage/doc/termimage/index.html"
+documentation = "https://rawcdn.githack.com/nabijaczleweli/termimage/doc/termimage/index.html"
 repository = "https://github.com/nabijaczleweli/termimage"
 readme = "README.md"
 keywords = ["image", "terminal", "picture", "display", "show"]
 categories = ["command-line-utilities"]
 license = "MIT"
 # Remember to also update in appveyor.yml
-version = "0.3.2"
+version = "0.4.0"
 # Remember to also update in termimage.md
 authors = ["nabijaczleweli <nabijaczleweli@gmail.com>",
-           "Josh Triplett <josh@joshtriplett.org>"]
+           "Josh Triplett <josh@joshtriplett.org>",
+           "Aaron Hill <aa1ronham@gmail.com>"]
 exclude = ["*.enc"]
 
 
 [dependencies]
-lazy_static = "0.2"
-term_size = "0.2"
-image = "0.10"
-regex = "0.1"
-clap = "2.12"
+lazy_static = "1.3"
+term_size = "0.3"
+image = "0.21"
+regex = "1.1"
+clap = "2.33"
 
-[target.'cfg(target_os = "windows")'.dependencies]
-kernel32-sys = "0.2"
-winapi = "0.2"
+[target.'cfg(target_os = "windows")'.dependencies.winapi]
+version = "0.3"
+features = ["winbase", "wincon"]
 
 
 [[bin]]
