@@ -2,7 +2,7 @@
 Display images in your terminal, kind of
 
 ## [Documentation](https://cdn.rawgit.com/nabijaczleweli/termimage/doc/termimage/index.html)
-## [Manpages](https://cdn.rawgit.com/nabijaczleweli/termimage/man/termimage.1.html)
+## [Manpage](https://cdn.rawgit.com/nabijaczleweli/termimage/man/termimage.1.html)
 
 ### Usage
 
@@ -23,8 +23,9 @@ For more usage examples see [the documentation](https://cdn.rawgit.com/nabijaczl
 ### Examples
 
 Windows:
-![DS3 image after](assets/DS3-result.jpg)
+![DS3 image after](assets/DS3-winapi.jpg)
 
 Linux with truecolor support:
+![DS3 image after](assets/DS3-truecolor.png)
 ![rust logo image after](assets/rust-logo-truecolor.png)
 ![playing dice image after](assets/playing-dice-truecolor.png)

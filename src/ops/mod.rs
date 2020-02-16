@@ -1,16 +1,18 @@
 //! Main functions doing actual work.
 //!
-//! Use `guess_format()` to get teh image format from a path,
-//! then read the image using `load_image()`,
+//! Use `guess_format()` to get the image format from a path,
+//! then read the image using `load_image()` to the size given by `image_resized_size()`,
 //! resize it to terminal size with `resize_image()`
-//! and display it with `write_[no_]ansi()`.
+//! and display it with `write_[no_]ansi[_truecolor]()`,
+//! or display it yourself with approximations from `create_colourtable()`.
 
 use self::super::util::{ANSI_BG_COLOUR_ESCAPES, ANSI_COLOUR_ESCAPES, ANSI_BG_COLOURS, ANSI_COLOURS, JPEG_MAGIC, BMP_MAGIC, ICO_MAGIC, GIF_MAGIC, PNG_MAGIC,
                         closest_colour};
 use image::{self, GenericImage, DynamicImage, ImageFormat, FilterType, Pixel};
 use std::io::{BufReader, Write, Read};
-use self::super::Outcome;
+use self::super::Error;
 use std::path::PathBuf;
+use std::ops::Index;
 use std::fs::File;
 
 mod no_ansi;
@@ -43,12 +45,12 @@ pub use self::no_ansi::write_no_ansi;
 ///
 /// ```
 /// # use std::path::PathBuf;
-/// # use termimage::Outcome;
+/// # use termimage::Error;
 /// # use termimage::ops::guess_format;
 /// assert_eq!(guess_format(&("src/ops.rs".to_string(), PathBuf::from("src/ops/mod.rs"))),
-/// Err(Outcome::GuessingFormatFailed("src/ops.rs".to_string())));
+/// Err(Error::GuessingFormatFailed("src/ops.rs".to_string())));
 /// ```
-pub fn guess_format(file: &(String, PathBuf)) -> Result<ImageFormat, Outcome> {
+pub fn guess_format(file: &(String, PathBuf)) -> Result<ImageFormat, Error> {
     file.1
         .extension()
         .and_then(|ext| match &ext.to_str().unwrap().to_lowercase()[..] {
@@ -66,7 +68,7 @@ pub fn guess_format(file: &(String, PathBuf)) -> Result<ImageFormat, Outcome> {
         })
         .unwrap_or_else(|| {
             let mut buf = [0; 32];
-            let read = try!(File::open(&file.1).map_err(|_| Outcome::OpeningImageFailed(file.0.clone()))).read(&mut buf).unwrap();
+            let read = try!(File::open(&file.1).map_err(|_| Error::OpeningImageFailed(file.0.clone()))).read(&mut buf).unwrap();
             let buf = &buf[..read];
 
             if buf.len() >= PNG_MAGIC.len() && &buf[..PNG_MAGIC.len()] == PNG_MAGIC {
@@ -80,7 +82,7 @@ pub fn guess_format(file: &(String, PathBuf)) -> Result<ImageFormat, Outcome> {
             } else if buf.len() >= ICO_MAGIC.len() && &buf[..ICO_MAGIC.len()] == ICO_MAGIC {
                 Ok(ImageFormat::ICO)
             } else {
-                Err(Outcome::GuessingFormatFailed(file.0.clone()))
+                Err(Error::GuessingFormatFailed(file.0.clone()))
             }
         })
 }
@@ -88,8 +90,8 @@ pub fn guess_format(file: &(String, PathBuf)) -> Result<ImageFormat, Outcome> {
 /// Load an image from the specified file as the specified format.
 ///
 /// Get the image fromat with `guess_format()`.
-pub fn load_image(file: &(String, PathBuf), format: ImageFormat) -> Result<DynamicImage, Outcome> {
-    Ok(image::load(BufReader::new(try!(File::open(&file.1).map_err(|_| Outcome::OpeningImageFailed(file.0.clone())))),
+pub fn load_image(file: &(String, PathBuf), format: ImageFormat) -> Result<DynamicImage, Error> {
+    Ok(image::load(BufReader::new(try!(File::open(&file.1).map_err(|_| Error::OpeningImageFailed(file.0.clone())))),
                    format)
         .unwrap())
 }
@@ -123,23 +125,53 @@ pub fn resize_image(img: &DynamicImage, size: (u32, u32)) -> DynamicImage {
     img.resize_exact(size.0, size.1, FilterType::Nearest)
 }
 
-/// Display the specified image in the default console using ANSI escape codes.
-pub fn write_ansi<W: Write>(out: &mut W, img: &DynamicImage) {
+/// Create a line-major table of (upper, lower) colour approximation indices given the supported colours therefor.
+///
+/// # Examples
+///
+/// Approximate `img` to ANSI and display it to stdout.
+///
+/// ```
+/// # extern crate termimage;
+/// # extern crate image;
+/// # use termimage::util::{ANSI_COLOURS, ANSI_BG_COLOURS, ANSI_COLOUR_ESCAPES, ANSI_BG_COLOUR_ESCAPES};
+/// # use termimage::ops::create_colourtable;
+/// # fn main() {
+/// # let img = image::DynamicImage::new_rgb8(16, 16);
+/// for line in create_colourtable(&img, ANSI_COLOURS, ANSI_BG_COLOURS) {
+///     for (upper_clr, lower_clr) in line {
+///         print!("{}{}\u{2580}", // ▀
+///                ANSI_COLOUR_ESCAPES[upper_clr],
+///                ANSI_BG_COLOUR_ESCAPES[lower_clr]);
+///     }
+///     println!("{}{}", ANSI_COLOUR_ESCAPES[15], ANSI_BG_COLOUR_ESCAPES[0]);
+/// }
+/// # }
+/// ```
+pub fn create_colourtable<C: Index<usize, Output = u8>>(img: &DynamicImage, upper_colours: &[C], lower_colours: &[C]) -> Vec<Vec<(usize, usize)>> {
     let (width, height) = img.dimensions();
     let term_h = height / 2;
 
-    for y in 0..term_h {
-        let upper_y = y * 2;
-        let lower_y = upper_y + 1;
+    (0..term_h)
+        .map(|y| {
+            let upper_y = y * 2;
+            let lower_y = upper_y + 1;
 
-        for x in 0..width {
-            let closest_upper_clr = closest_colour(img.get_pixel(x, upper_y).to_rgb(), ANSI_COLOURS);
-            let closest_lower_clr = closest_colour(img.get_pixel(x, lower_y).to_rgb(), ANSI_BG_COLOURS);
+            (0..width)
+                .map(|x| (closest_colour(img.get_pixel(x, upper_y).to_rgb(), upper_colours), closest_colour(img.get_pixel(x, lower_y).to_rgb(), lower_colours)))
+                .collect()
+        })
+        .collect()
+}
 
+/// Display the specified image in the default console using ANSI escape codes.
+pub fn write_ansi<W: Write>(out: &mut W, img: &DynamicImage) {
+    for line in create_colourtable(img, ANSI_COLOURS, ANSI_BG_COLOURS) {
+        for (upper_clr, lower_clr) in line {
             write!(out,
                    "{}{}\u{2580}", // ▀
-                   ANSI_COLOUR_ESCAPES[closest_upper_clr],
-                   ANSI_BG_COLOUR_ESCAPES[closest_lower_clr])
+                   ANSI_COLOUR_ESCAPES[upper_clr],
+                   ANSI_BG_COLOUR_ESCAPES[lower_clr])
                 .unwrap();
         }
         writeln!(out, "{}{}", ANSI_COLOUR_ESCAPES[15], ANSI_BG_COLOUR_ESCAPES[0]).unwrap();

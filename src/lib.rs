@@ -1,6 +1,7 @@
 //! Display images in your terminal, kind of
 //!
-//! ![DS3 SS example](https://cdn.rawgit.com/nabijaczleweli/termimage/master/assets/DS3-result.jpg)
+//! ![DS3 SS example WinAPI](https://cdn.rawgit.com/nabijaczleweli/termimage/master/assets/DS3-winapi.jpg)
+//! ![DS3 SS example truecolor](https://cdn.rawgit.com/nabijaczleweli/termimage/master/assets/DS3-truecolor.png)
 //! ![rust logo example](https://cdn.rawgit.com/nabijaczleweli/termimage/master/assets/rust-logo-truecolor.png)
 //! ![playing dice example](https://cdn.rawgit.com/nabijaczleweli/termimage/master/assets/playing-dice-truecolor.png)
 //!
@@ -17,6 +18,54 @@
 //! |> image_resized_size()
 //! |> resize_image()
 //! |> write_[no_]ansi[_truecolor]()
+//! ```
+//!
+//! ### Prose explanation
+//!
+//! First, get an `Options` instance, be it via a struct-literal or `Options::parse()`;
+//! or don't and just create the individual arguments manually.
+//!
+//! Then, use `ops::load_image()`. If you know your image's format, great. If you don't, get it via `ops::guess_format()`.
+//!
+//! After that resize the image to an output-ready size provided by `ops::image_resized_size()` with `resize_image()`.
+//! `ops::image_resized_size()` takes into consideration using two pixels per cell in the output functions,
+//! so the size it returns is twice as tall as the terminal output size passed to it.
+//!
+//! Finally, call `ops::write_ansi()`/`ops::write_ansi_truecolor()`/`ops::write_no_ansi()` depending on your liking with the
+//! resulting image.
+//!
+//! Or, if you want to display images manually, use `ops::create_colourtable()` to create an approximate colours table and
+//! display it, for example, with `ncurses`.
+//!
+//! ### Example
+//!
+//! This is a complete example, from parsing the commandline to displaying the result.
+//!
+//! ```no_run
+//! # extern crate termimage;
+//! # extern crate image;
+//! # use image::GenericImage;
+//! # use std::io::stdout;
+//! # use termimage::*;
+//! # fn main() {
+//! #   not_main();
+//! # }
+//! # fn not_main() -> Result<(), Error> {
+//! let opts = Options::parse();
+//!
+//! let format = try!(ops::guess_format(&opts.image));
+//! let img = try!(ops::load_image(&opts.image, format));
+//!
+//! let img_s = ops::image_resized_size(img.dimensions(), opts.size, opts.preserve_aspect);
+//! let resized = ops::resize_image(&img, img_s);
+//!
+//! match opts.ansi_out {
+//!     Some(true) => ops::write_ansi_truecolor(&mut stdout(), &resized),
+//!     Some(false) => ops::write_ansi(&mut stdout(), &resized),
+//!     None => ops::write_no_ansi(&resized),
+//! }
+//! # Ok(())
+//! # }
 //! ```
 //!
 //! # Executable manpage
@@ -118,11 +167,11 @@ extern crate regex;
 #[macro_use]
 extern crate clap;
 
+mod error;
 mod options;
-mod outcome;
 
 pub mod ops;
 pub mod util;
 
+pub use error::Error;
 pub use options::Options;
-pub use outcome::Outcome;
