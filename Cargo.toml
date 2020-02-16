@@ -1,0 +1,31 @@
+[package]
+name = "termimage"
+description = "Display images in your terminal, kind of"
+documentation = "https://cdn.rawgit.com/nabijaczleweli/termimage/doc/termimage/index.html"
+repository = "https://github.com/nabijaczleweli/termimage"
+readme = "README.md"
+keywords = ["image", "terminal", "picture", "display", "show"]
+license = "MIT"
+# Remember to also update in appveyor.yml
+version = "0.1.0"
+# Remember to also update in mod/*.md
+authors = ["nabijaczleweli <nabijaczleweli@gmail.com>"]
+exclude = ["*.enc"]
+
+
+[dependencies]
+lazy_static = "0.2"
+term_size = "0.2"
+image = "0.10"
+regex = "0.1"
+clap = "2.12"
+
+[target.'cfg(target_os = "windows")'.dependencies]
+kernel32-sys = "0.2"
+winapi = "0.2"
+
+
+[[bin]]
+name = "termimage"
+test = false
+doc = false
