@@ -1,6 +1,8 @@
 //! Display images in your terminal, kind of
 //!
 //! ![DS3 SS example](https://cdn.rawgit.com/nabijaczleweli/termimage/master/assets/DS3-result.jpg)
+//! ![rust logo example](https://cdn.rawgit.com/nabijaczleweli/termimage/master/assets/rust-logo-truecolor.png)
+//! ![playing dice example](https://cdn.rawgit.com/nabijaczleweli/termimage/master/assets/playing-dice-truecolor.png)
 //!
 //! # Library doc
 //!
@@ -12,8 +14,9 @@
 //! Options::parse()
 //! |> guess_format()
 //! |> load_image()
+//! |> image_resized_size()
 //! |> resize_image()
-//! |> write_[no_]ansi()
+//! |> write_[no_]ansi[_truecolor]()
 //! ```
 //!
 //! # Executable manpage
@@ -93,6 +96,14 @@
 //! ```text
 //! Display assets/image.png in the terminal using the simple ANSI output type,
 //! optionally not preserving the aspect ratio.
+//! ```
+//!
+//! (for f in $(find *image_dir* -type f); do `termimage -s` *NxM* [`-f`] [`-a` *ANSI_type*] $f; done) > *out_file*
+//!
+//! ```text
+//! Print all images in image_dir to out_file.
+//!
+//! Note the --size option being specified, since it's required when outputting to a file.
 //! ```
 
 #[macro_use]
