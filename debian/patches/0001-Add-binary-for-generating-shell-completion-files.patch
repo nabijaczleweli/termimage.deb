@@ -10,7 +10,7 @@ Subject: Add binary for generating shell completion files
  create mode 100644 src/termimage-build-completions.rs
 
 diff --git a/Cargo.toml b/Cargo.toml
-index 6cdeb5e..f90c12b 100644
+index c95ec75..6499c32 100644
 --- a/Cargo.toml
 +++ b/Cargo.toml
 @@ -32,3 +32,9 @@ features = ["winbase", "wincon"]
@@ -24,7 +24,7 @@ index 6cdeb5e..f90c12b 100644
 +test = false
 +doc = false
 diff --git a/src/options.rs b/src/options.rs
-index 2166742..b9553cd 100644
+index 6e8faad..73f6dbb 100644
 --- a/src/options.rs
 +++ b/src/options.rs
 @@ -44,25 +44,27 @@ pub struct Options {
@@ -48,8 +48,8 @@ index 2166742..b9553cd 100644
 -        };
 +        }
  
--        let matches = app_from_crate!()
-+        app_from_crate!()
+-        let matches = app_from_crate!("\n")
++        app_from_crate!("\n")
              .setting(AppSettings::ColoredHelp)
              .arg(Arg::from_usage("<IMAGE> 'Image file to display'").validator(Options::image_file_validator))
              .arg(szarg)
