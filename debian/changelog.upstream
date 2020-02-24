@@ -1,3 +1,13 @@
+v0.5.1          Shorter delay than 0.4.0 was, at least?
+    
+    Fixed:
+      * Warnings caused by try!() on current rustcs
+      * Authors list being separated with colons instead of newlines
+    
+    New:
+      * Debian repo install method in README
+
+
 v0.5.0          Advancement
     
     Changed:
@@ -53,6 +63,7 @@ v0.2.1          Warning: too tall to join
     
     Fix:
       * Images were too tall when autodetecting term size
+        (https://github.com/nabijaczleweli/termimage/issues/7)
       * Unused import warnings on non-Windows
     
     New:
@@ -71,6 +82,7 @@ v0.2.0          LUDICROUS RESOLUTION
 v0.1.1          Wizardry
     
     New:
+      * Guessing format from magic (https://github.com/nabijaczleweli/termimage/issues/1)
       * Outcome::OpeningImageFailed for load_image() and guess_format()
 
 
