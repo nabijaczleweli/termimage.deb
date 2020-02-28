@@ -1,3 +1,11 @@
+termimage (0.5.1-1) unstable; urgency=medium
+
+  * New upstream version 0.5.1
+  * Fix upstream changelog missing some lines
+  * Rebase patches
+
+ -- nabijaczleweli <nabijaczleweli@gmail.com>  Fri, 28 Feb 2020 16:54:43 +0100
+
 termimage (0.5.0-5) unstable; urgency=medium
 
   * Fix Architecture from linux-any to any
