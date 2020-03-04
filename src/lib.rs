@@ -59,15 +59,18 @@
 //! # fn not_main() -> Result<(), Error> {
 //! let opts = Options::parse();
 //!
-//! let format = try!(ops::guess_format(&opts.image));
-//! let img = try!(ops::load_image(&opts.image, format));
+//! let format = ops::guess_format(&opts.image)?;
+//! let img = ops::load_image(&opts.image, format)?;
 //!
 //! let img_s = ops::image_resized_size(img.dimensions(), opts.size, opts.preserve_aspect);
 //! let resized = ops::resize_image(&img, img_s);
 //!
 //! match opts.ansi_out {
-//!     Some(true) => ops::write_ansi_truecolor(&mut stdout(), &resized),
-//!     Some(false) => ops::write_ansi(&mut stdout(), &resized),
+//!     Some(AnsiOutputFormat::Truecolor) => ops::write_ansi_truecolor(&mut stdout(), &resized),
+//!     Some(AnsiOutputFormat::SimpleWhite) =>
+//!         ops::write_ansi(&mut stdout(), &resized, &util::ANSI_COLOURS_WHITE_BG),
+//!     Some(AnsiOutputFormat::SimpleBlack) =>
+//!         ops::write_ansi(&mut stdout(), &resized, &util::ANSI_COLOURS_BLACK_BG),
 //!     None => ops::write_no_ansi(&resized),
 //! }
 //! # Ok(())
@@ -123,11 +126,11 @@
 //! ```text
 //! Force ANSI output of the specified kind,
 //!
-//! The accepted values are "simple" and "truecolor", truecolor is the default
-//! on non-Windows.
+//! The accepted values are "truecolor", "simple-black", and "simple-white",
+//! truecolor is the default on non-Windows.
 //!
-//! Simple ANSI output uses 3-bit background colours, while truecolor supports
-//! the whole 24-bit pallette.
+//! Simple ANSI output uses 3-bit background colours for the specified background,
+//! while truecolor supports the whole 24-bit pallette.
 //! ```
 //!
 //! -f --force
@@ -176,6 +179,7 @@ mod options;
 
 pub mod ops;
 pub mod util;
+pub mod migration;
 
 pub use error::Error;
-pub use options::Options;
+pub use options::{Options, AnsiOutputFormat};
