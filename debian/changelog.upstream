@@ -1,3 +1,25 @@
+v1.0.0          From across the ages
+    
+    BREAKING:
+      * Split off util::ANSI_COLOURS into util::ANSI_COLOURS_{WHITE,BLACK}_BG,
+        for white and black background respectively
+      * Removed util::ANSI_BG_COLOURS in favour of new util::bg_colours_for() funxion
+      * ops::write_ansi() now takes the foreground colourset,
+        instead of defaulting to the white-background one
+      * -a/--ansi argument now takes "truecolor,simple-{black,white}" instead of "truecolor,simple"
+    
+    New:
+      * v1.0 migration guide
+    
+    Improved:
+      * Colour similarity algorithm
+        Before: https://user-images.githubusercontent.com/6709544/75836768-30fb4180-5dc3-11ea-8b59-92fb31d82ba3.png
+        After:  https://user-images.githubusercontent.com/6709544/75836772-3193d800-5dc3-11ea-8bfb-23f2489d6616.png
+    
+    Changed:
+      * Debian repository URL
+
+
 v0.5.1          Shorter delay than 0.4.0 was, at least?
     
     Fixed:
