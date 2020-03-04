@@ -6,8 +6,9 @@
 //! and display it with `write_[no_]ansi[_truecolor]()`,
 //! or display it yourself with approximations from `create_colourtable()`.
 
-use self::super::util::{ANSI_BG_COLOUR_ESCAPES, ANSI_RESET_ATTRIBUTES, ANSI_COLOUR_ESCAPES, ANSI_BG_COLOURS, ANSI_COLOURS, JPEG_MAGIC, BMP_MAGIC, ICO_MAGIC,
-                        GIF_MAGIC, PNG_MAGIC, closest_colour};
+
+use self::super::util::{ANSI_BG_COLOUR_ESCAPES, ANSI_RESET_ATTRIBUTES, ANSI_COLOUR_ESCAPES, JPEG_MAGIC, BMP_MAGIC, ICO_MAGIC, GIF_MAGIC, PNG_MAGIC,
+                        closest_colour, bg_colours_for};
 use image::{self, GenericImageView, DynamicImage, ImageFormat, FilterType, Pixel};
 use std::io::{BufReader, Write, Read};
 use self::super::Error;
@@ -134,11 +135,11 @@ pub fn resize_image(img: &DynamicImage, size: (u32, u32)) -> DynamicImage {
 /// ```
 /// # extern crate termimage;
 /// # extern crate image;
-/// # use termimage::util::{ANSI_COLOURS, ANSI_BG_COLOURS, ANSI_COLOUR_ESCAPES, ANSI_BG_COLOUR_ESCAPES};
+/// # use termimage::util::{ANSI_COLOURS_WHITE_BG, ANSI_COLOUR_ESCAPES, ANSI_BG_COLOUR_ESCAPES, bg_colours_for};
 /// # use termimage::ops::create_colourtable;
 /// # fn main() {
 /// # let img = image::DynamicImage::new_rgb8(16, 16);
-/// for line in create_colourtable(&img, ANSI_COLOURS, ANSI_BG_COLOURS) {
+/// for line in create_colourtable(&img, &ANSI_COLOURS_WHITE_BG, &bg_colours_for(&ANSI_COLOURS_WHITE_BG)) {
 ///     for (upper_clr, lower_clr) in line {
 ///         print!("{}{}\u{2580}", // ▀
 ///                ANSI_COLOUR_ESCAPES[upper_clr],
@@ -164,9 +165,9 @@ pub fn create_colourtable<C: Index<usize, Output = u8>>(img: &DynamicImage, uppe
         .collect()
 }
 
-/// Display the specified image in the default console using ANSI escape codes.
-pub fn write_ansi<W: Write>(out: &mut W, img: &DynamicImage) {
-    for line in create_colourtable(img, ANSI_COLOURS, ANSI_BG_COLOURS) {
+/// Display the specified image approximating it to the specified colours in the default console using ANSI escape codes.
+pub fn write_ansi<W: Write, C: Index<usize, Output = u8>>(out: &mut W, img: &DynamicImage, foreground_colours: &[C]) {
+    for line in create_colourtable(img, foreground_colours, &bg_colours_for(foreground_colours)) {
         for (upper_clr, lower_clr) in line {
             write!(out,
                    "{}{}\u{2580}", // ▀
