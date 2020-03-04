@@ -10,7 +10,7 @@ Subject: Add binary for generating shell completion files
  create mode 100644 src/termimage-build-completions.rs
 
 diff --git a/Cargo.toml b/Cargo.toml
-index c95ec75..6499c32 100644
+index f9d18c7..b1701b7 100644
 --- a/Cargo.toml
 +++ b/Cargo.toml
 @@ -32,3 +32,9 @@ features = ["winbase", "wincon"]
@@ -24,10 +24,10 @@ index c95ec75..6499c32 100644
 +test = false
 +doc = false
 diff --git a/src/options.rs b/src/options.rs
-index 6e8faad..73f6dbb 100644
+index 97ff69a..98a1e12 100644
 --- a/src/options.rs
 +++ b/src/options.rs
-@@ -44,25 +44,27 @@ pub struct Options {
+@@ -52,25 +52,27 @@ pub struct Options {
  }
  
  impl Options {
@@ -54,7 +54,7 @@ index 6e8faad..73f6dbb 100644
              .arg(Arg::from_usage("<IMAGE> 'Image file to display'").validator(Options::image_file_validator))
              .arg(szarg)
              .arg(Arg::from_usage("-f --force 'Don\\'t preserve the image\\'s aspect ratio'"))
-             .arg(Arg::from_usage("-a --ansi [ANSI] 'Force output ANSI escapes'").possible_values(&["simple", "truecolor"]))
+             .arg(Arg::from_usage("-a --ansi [ANSI] 'Force output ANSI escapes'").possible_values(&["truecolor", "simple-black", "simple-white"]))
 +    }
 +
 +    /// Parse `env`-wide command-line arguments into an `Options` instance
