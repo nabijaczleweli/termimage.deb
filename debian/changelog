@@ -1,3 +1,11 @@
+termimage (1.0.0-2) unstable; urgency=medium
+
+  * Build only roff manpages
+  * Add clean target
+  * Fix build defs so this actually builds inside a clean sid chroot
+
+ -- nabijaczleweli <nabijaczleweli@gmail.com>  Sat, 07 Mar 2020 18:19:27 +0100
+
 termimage (1.0.0-1) unstable; urgency=medium
 
   * New upstream version 1.0.0
