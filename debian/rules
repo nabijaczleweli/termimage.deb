@@ -28,7 +28,6 @@ override_dh_auto_install:
 override_dh_auto_clean:
 	rm -rf target/ Cargo.lock termimage.1
 
-# for tag in $(git tag -l | tac); do git tag -ln1000 "$tag"; echo; echo; done | awk '!/[[:space:]]+\([[:alnum:]]{40}\)$/' | sed -re 's;\([[:alnum:]]{40}\)[[:space:]]+;;g' -e 's;\(#;(https://github.com/nabijaczleweli/termimage/issues/;g' -e 's;\(@;(https://github.com/;g' | head -c -2
 override_dh_installchangelogs:
 	dh_installchangelogs debian/changelog.upstream
 

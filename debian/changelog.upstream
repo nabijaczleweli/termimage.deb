@@ -1,5 +1,27 @@
+v1.2.0          I'm a fly caught in your honey, catch me up with all the yummy stuff you bleed
+
+    Changed:
+      * image dependency to 0.24
+        (https://github.com/nabijaczleweli/termimage/issues/19) (https://github.com/Aaron1011)
+
+    New:
+      * AUR installation instructions in README
+        (https://github.com/nabijaczleweli/termimage/issues/16) (https://github.com/orhun)
+      * @orhun in authors list
+
+    Fixed:
+      * Dead meritbadge link in README
+      * AppVeyor builds
+      * Old debian.nabijaczleweli.xyz instructions
+
+v1.1.0          Advancement-ng
+
+    Changed:
+      * image dep to version 0.23
+        (https://github.com/nabijaczleweli/termimage/issues/15) (https://github.com/Aaron1011)
+
 v1.0.0          From across the ages
-    
+
     BREAKING:
       * Split off util::ANSI_COLOURS into util::ANSI_COLOURS_{WHITE,BLACK}_BG,
         for white and black background respectively
@@ -7,105 +29,95 @@ v1.0.0          From across the ages
       * ops::write_ansi() now takes the foreground colourset,
         instead of defaulting to the white-background one
       * -a/--ansi argument now takes "truecolor,simple-{black,white}" instead of "truecolor,simple"
-    
+
     New:
       * v1.0 migration guide
-    
+
     Improved:
       * Colour similarity algorithm
         Before: https://user-images.githubusercontent.com/6709544/75836768-30fb4180-5dc3-11ea-8b59-92fb31d82ba3.png
         After:  https://user-images.githubusercontent.com/6709544/75836772-3193d800-5dc3-11ea-8bfb-23f2489d6616.png
-    
+
     Changed:
       * Debian repository URL
 
-
 v0.5.1          Shorter delay than 0.4.0 was, at least?
-    
+
     Fixed:
       * Warnings caused by try!() on current rustcs
       * Authors list being separated with colons instead of newlines
-    
+
     New:
       * Debian repo install method in README
 
-
 v0.5.0          Advancement
-    
+
     Changed:
       * image version to 0.22
         (https://github.com/nabijaczleweli/termimage/issues/13) (https://github.com/Aaron1011)
       * lazy_static and regex versions to newest
 
-
 v0.4.0          Machinery's a meaner beast, but we're still in the saddle
-    
+
     Changed:
       * Crate version image protocol to HTTPS
       * RawGit links to GitHack
       * Dependencies to freshest versions
         (https://github.com/nabijaczleweli/termimage/issues/12) (https://github.com/Aaron1011)
-    
+
     New:
       * Installation/building instruxions
         (https://github.com/nabijaczleweli/termimage/issues/11)
       * @Aaron1011 in authors list
 
-
 v0.3.2          Hello Linux my old friend
-    
+
     Fixed:
       * ANSI attributes persist after printing image no longer by printing
         reset
         (https://github.com/nabijaczleweli/termimage/issues/10)
 
-
 v0.3.1          FEATURES!
-    
+
     But not any new ones from this crate. Move along, citizen.
 
-
 v0.3.0          DRY, icy Errors and ⚡⚡
-    
+
     New:
       * Dank-ass DS3 truecolor SS, thanks /u/little-dude
       * Prose and examples in general library usage
       * create_colourtable() so you can display images yourself with as
         little hassle as possible
         (https://github.com/nabijaczleweli/termimage/issues/9)
-    
+
     Changed:
       * Rename Outcome to Error
-    
+
     Internals:
       * Use create_colourtable() in WinAPI and ANSI display impls
 
-
 v0.2.1          Warning: too tall to join
-    
+
     Fix:
       * Images were too tall when autodetecting term size
-        (https://github.com/nabijaczleweli/termimage/issues/7)
+        (e2572099976da78fbf4688314a04a74e81bc56e4) (https://github.com/nabijaczleweli/termimage/issues/7)
       * Unused import warnings on non-Windows
-    
+
     New:
       * More examples
 
-
 v0.2.0          LUDICROUS RESOLUTION
-    
+
     New:
       * Optional 24-bit (truecolor) ANSI output
         (https://github.com/nabijaczleweli/termimage/issues/5)
       * Double the output resolution by using Unicode upper block char
         (https://github.com/nabijaczleweli/termimage/issues/4)
 
-
 v0.1.1          Wizardry
-    
-    New:
-      * Guessing format from magic (https://github.com/nabijaczleweli/termimage/issues/1)
-      * Outcome::OpeningImageFailed for load_image() and guess_format()
 
+    New:
+      * Guessing format from magic (11902130098a501a66e73087f0caa8ddafe26ee8) (https://github.com/nabijaczleweli/termimage/issues/1)
+      * Outcome::OpeningImageFailed for load_image() and guess_format()
 
 v0.1.0          Initial release
