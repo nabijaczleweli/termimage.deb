@@ -4,11 +4,11 @@ Upstream-Contact: https://github.com/nabijaczleweli/termimage/issues
 Source: https://github.com/nabijaczleweli/termimage
 
 Files: *
-Copyright: 2016 nabijaczleweli <nabijaczleweli@gmail.com>
+Copyright: 2016 наб <nabijaczleweli@nabijaczleweli.xyz>
 License: Expat
 
 Files: debian/*
-Copyright: 2020 nabijaczleweli <nabijaczleweli@gmail.com>
+Copyright: 2016 наб <nabijaczleweli@nabijaczleweli.xyz>
 License: Expat
 
 License: Expat
