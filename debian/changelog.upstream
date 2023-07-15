@@ -1,3 +1,19 @@
+v1.2.1          В золотых цепях я утопаю в болоте
+
+    Fixed:
+      * Stray \es in -f help string
+      * Tails of lines after the image being set to black,
+        instead of teletype-default, colours
+        (https://github.com/nabijaczleweli/termimage/issues/22) (https://github.com/caeklol)
+
+    New:
+      * @caeklol in authors list
+
+    Internal:
+      * regex and lazy_static replaced with string operations
+      * Fully buffer output. Up to 0.5s speed-up for (unreasonably) huge teletypes
+      * AppVeyor fixed once more
+
 v1.2.0          I'm a fly caught in your honey, catch me up with all the yummy stuff you bleed
 
     Changed:
