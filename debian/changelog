@@ -1,3 +1,12 @@
+termimage (1.2.1-1) unstable; urgency=medium
+
+  * Fix d/watch for new github
+  * New upstream version 1.2.1
+  * Update upstream changelog
+  * Refresh patches
+
+ -- наб <nabijaczleweli@nabijaczleweli.xyz>  Sat, 15 Jul 2023 19:10:16 +0200
+
 termimage (1.2.0-1) unstable; urgency=medium
 
   * New upstream version 1.2.0
